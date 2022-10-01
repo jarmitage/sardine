@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   sardine:
+    container_name: sardine
     build:
       context: .
       dockerfile: Dockerfile
