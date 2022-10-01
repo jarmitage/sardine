@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
       #target: dev
     restart: always
-
     command: tail -F null
     stdin_open: true
+    ports:
+      - "23000:23000"

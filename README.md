@@ -35,9 +35,6 @@ To learn more about Sardine, please consult the project website: [Sardine](https
 In another terminal launch
 `docker exec -ti sardine-sardine-1 /bin/bash`
 
-`poetry shell`
-
-`python -m fishery `
 
 
 
