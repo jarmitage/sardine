@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  sardine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      #target: dev
+    restart: always
+
+    command: tail -F null
+    stdin_open: true
