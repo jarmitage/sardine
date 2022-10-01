@@ -23,3 +23,27 @@ To learn more about Sardine, please consult the project website: [Sardine](https
 
 ![sardine-usage](pictures/sardine_usage.png)
 
+# Docker setup
+
+## Using docker-compose
+
+`docker-compose build`
+
+`docker-compose up`
+
+**Enter into container**
+In another terminal launch
+`docker exec -ti sardine-sardine-1 /bin/bash`
+
+`poetry shell`
+
+`python -m fishery `
+
+
+
+## Manual 
+### Build
+` docker build -t sardine . `
+
+
+## Exec command inside container
