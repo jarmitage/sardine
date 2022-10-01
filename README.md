@@ -33,7 +33,7 @@ To learn more about Sardine, please consult the project website: [Sardine](https
 
 **Enter into container**
 In another terminal launch
-`docker exec -ti sardine-sardine-1 /bin/bash`
+`docker exec -ti sardine /bin/bash`
 
 
 
