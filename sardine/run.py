@@ -70,6 +70,15 @@ my_osc_connexion = OSCHandler(
     loop=my_osc_loop,
 )
 
+# Pa >> mrp(note='C', duration='0.5')
+
+magnetic_resonator = MRPHandler(
+    ip='127.0.0.1',
+    port=7770,
+    ahead_amount=0.1,
+    loop= my_osc_loop,
+)
+
 # OSC Listener Handler: dummy OSCIn handler, used for test purposes
 my_osc_listener = OSCInHandler(
     ip="127.0.0.1", port=33333, name="OSC-In test", loop=my_osc_loop
@@ -324,19 +333,47 @@ class Delay:
         if not self.delayFirst:
             sleep(self.duration)
 
-
-# Aliases!
+# python -m fishery
 
 clock = bowl.clock
 
 I, V = bowl.iterators, bowl.variables  # Iterators and Variables from env
 P = Pat  # Generic pattern interface
 N = midi.send  # For sending MIDI Notes
+MRP = magnetic_resonator.send
+MRPQ = magnetic_resonator.send_message
 PC = midi.send_program  # For MIDI Program changes
 CC = midi.send_control  # For MIDI Control Change messages
 Ocustom = my_osc_connexion.send
 play = Player.play
 
+"""
+@swim
+def baba():
+    value = call_to_some_func()
+    MRP(note='C,E,G')
+    MRPQ(quality='blabla', )
+    Pa >> mrp(note=value)
+    again(baba)
+
+Pa >> mrp()
+Pa >> mrpq(address="/mrp/quality/intesity", value="0.1, 0.5")
+
+/mrp/quality/intesity 0.1
+
+def _mrpq(q)
+    mrpq(address="/mrp/quality/"+q)
+
+def mrp_quality(n, q, v, i=0):
+    mrp_osc.send(c, '/mrp/quality/'+q, [15, n, v])
+
+"""
+
+def mrp(*args, **kwargs):
+    return play(magnetic_resonator, magnetic_resonator.send, *args, **kwargs)
+
+def mrpq(*args, **kwargs):
+    return play(magnetic_resonator, magnetic_resonator.send_message, *args, **kwargs)
 
 def n(*args, **kwargs):
     return play(midi, midi.send, *args, **kwargs)
