@@ -59,38 +59,6 @@ class MRPHandler(Sender):
         )
         osc_send(bun, self._name)
 
-
-    """
-    def mrp_note_on(n, i=0):
-        mrp_osc.send(c, '/mrp/midi', [0x9F, n, 127])
-
-    def mrp_note_off(n, i=0):
-        mrp_osc.send(c, '/mrp/midi', [0x8F, n, 0])
-
-    def mrp_quality(n, q, v, i=0):
-        mrp_osc.send(c, '/mrp/quality/'+q, [15, n, v])
-    
-    /mrp/allnotesoff
-
-    
-
-    mrp_note_on(60)
-    mrp_quality(60, 'intensity', 1.0)
-    mrp_note_off(60)
-    """
-
-    """
-    @swim def baba():
-        MRP(note='C,E,G, .', p='0.5,0.25')
-        MRP(n='C,E,G, .', p='0.5,0.25')
-        MRPQ(note='D', quality='intensity', value='0.1, 0.5', p='0.5,0.25')
-        MRPQ(n='D', q='intensity', v='0.1, 0.5', p='0.5,0.25')
-        again(baba)
-
-    Pa >> MRP(note='C,Eb,G')
-    Pa >> MRPQ(note='C,Eb,G')
-    """
-
     def send_midi_note(self, note: int, duration: float, address: str = '/mrp/midi') -> None:
         """
         TODO: Rewrite that docstring
@@ -119,7 +87,7 @@ class MRPHandler(Sender):
     @alias_param(name="iterator", alias="i")
     @alias_param(name="divisor", alias="d")
     @alias_param(name="rate", alias="r")
-    def send(
+    def send_note(
         self,
         note: Optional[NumericElement] = 60,
         duration: NumericElement = 1,
@@ -142,45 +110,22 @@ class MRPHandler(Sender):
                 message[k] = int(message[k])
             self.send_midi_note(**message)
 
-    @alias_param(name="address", alias="add")
     @alias_param(name="quality", alias="q")
     @alias_param(name="value", alias="v")
     @alias_param(name="iterator", alias="i")
     @alias_param(name="divisor", alias="d")
     @alias_param(name="rate", alias="r")
-    def send_message(
+    def send_quality(
         self,
-        address: Optional[StringElement],
         iterator: Number = 0,
         divisor: NumericElement = 1,
         rate: NumericElement = 1,
         **pattern: NumericElement,
     ) -> None:
 
-        if address is None:
-            return
-
-        pattern["address"] = address
+        pattern["address"] = 'blah'
         for message in self.pattern_reduce(pattern, iterator, divisor, rate):
-            if message["address"] is None:
-                continue
-            address = message.pop("address")
-            # serialized = list(chain(*sorted(message.items())))
-            serialized = list(chain(*sorted(message.values())))
-            print('sending', serialized)
+            # TODO: Remove 'blah' from message list
+            address = '/mrp/quality/'+message.pop("quality")
+            serialized = list(chain(message.values()))[:-1]
             self._send(f"/{address}", serialized)
-
-"""
-def mrp_quality(n, q, v, i=0):
-    mrp_osc.send(c, '/mrp/quality/'+q, [15, n, v])
-
-/mrp/quality/intensity: int midiChannel, int midiNote, float intensity
-"""
-
-# Pa >> mrpq(address="mrp/quality/intensity", channel='15', note="C", value="0.1, 0.5")
-
-# message.values()
-# Result: [15, 60, 0.1]
-# Result: [15, 60, 0.5]
-
-# Pb >> mrp(note="C", duration="3")

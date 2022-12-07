@@ -340,40 +340,18 @@ clock = bowl.clock
 I, V = bowl.iterators, bowl.variables  # Iterators and Variables from env
 P = Pat  # Generic pattern interface
 N = midi.send  # For sending MIDI Notes
-MRP = magnetic_resonator.send
-MRPQ = magnetic_resonator.send_message
+MRPN = magnetic_resonator.send_note
+MRPQ = magnetic_resonator.send_quality
 PC = midi.send_program  # For MIDI Program changes
 CC = midi.send_control  # For MIDI Control Change messages
 Ocustom = my_osc_connexion.send
 play = Player.play
 
-"""
-@swim
-def baba():
-    value = call_to_some_func()
-    MRP(note='C,E,G')
-    MRPQ(quality='blabla', )
-    Pa >> mrp(note=value)
-    again(baba)
+def mrp_n(*args, **kwargs):
+    return play(magnetic_resonator, magnetic_resonator.send_note, *args, **kwargs)
 
-Pa >> mrp()
-Pa >> mrpq(address="/mrp/quality/intesity", value="0.1, 0.5")
-
-/mrp/quality/intesity 0.1
-
-def _mrpq(q)
-    mrpq(address="/mrp/quality/"+q)
-
-def mrp_quality(n, q, v, i=0):
-    mrp_osc.send(c, '/mrp/quality/'+q, [15, n, v])
-
-"""
-
-def mrp(*args, **kwargs):
-    return play(magnetic_resonator, magnetic_resonator.send, *args, **kwargs)
-
-def mrpq(*args, **kwargs):
-    return play(magnetic_resonator, magnetic_resonator.send_message, *args, **kwargs)
+def mrp_q(*args, **kwargs):
+    return play(magnetic_resonator, magnetic_resonator.send_quality, *args, **kwargs)
 
 def n(*args, **kwargs):
     return play(midi, midi.send, *args, **kwargs)
